@@ -1,0 +1,28 @@
+.title-page{
+  width: 100%;
+  background: rgb(158, 158, 253);
+}
+
+.title-page h4{
+  color: rgb(0, 0, 0);
+  text-align: center;
+}
+
+.main-text{
+  display: flex;
+}
+
+.bible-text{
+  background: rgb(245, 138, 138);
+  height:1200px;
+  width: 100%;
+  /* margin-right: 5px;  */
+}
+
+.bible-reference{
+  background: rgb(171, 233, 171);
+  height:1200px;
+  width: 10%;
+  margin-right: 5px; 
+  margin-left: 5px;
+}
