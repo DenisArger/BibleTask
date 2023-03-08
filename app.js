@@ -60,8 +60,8 @@ function fillVerses() {
         vers =
           `<sup> ${i} </sup>` + data.results[0].verses.synodal[part][i].text;
 
-        if (i <= 30) bibleVerses1.innerHTML += vers;
-        else bibleVerses2.innerHTML += vers;
+        if (i <= 4) bibleVerses1.innerHTML += `${vers}<br>`;
+        else bibleVerses2.innerHTML += `${vers}<br>`;
       }
 
     })
@@ -88,6 +88,16 @@ selectPart.addEventListener("change", function () {
   console.log("select=", this.options[this.selectedIndex].value);
   fillVerses();
 });
+
+
+function up() {  
+  var top = Math.max(document.body.scrollTop,document.documentElement.scrollTop);  
+if(top > 0) {  
+  window.scrollBy(0,((top+100)/-10));  
+  t = setTimeout('up()',20);  
+} else clearTimeout(t);  
+return false;  
+} 
 
 
 // ------------------------------------------
