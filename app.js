@@ -58,18 +58,17 @@ function fillVerses() {
 
       for (let i = 1; i <= data.results[0].verses_count; i++) {
         vers =
-          `<sup> ${i} </sup>` + data.results[0].verses.synodal[part][i].text;
+          `<sup class ="sup-index "> ${i} </sup>` + data.results[0].verses.synodal[part][i].text;
 
-        if (i <= 4) bibleVerses1.innerHTML += `${vers}<br>`;
+        if (i <= data.results[0].verses_count / 2 + 1)
+          bibleVerses1.innerHTML += `${vers}<br>`;
         else bibleVerses2.innerHTML += `${vers}<br>`;
       }
-
     })
     .catch(function (error) {
       console.log(error);
     });
 }
-
 
 selectBook.addEventListener("change", function () {
   shortname = this.options[this.selectedIndex].value;
@@ -80,8 +79,6 @@ selectBook.addEventListener("change", function () {
   console.log(dataBook[this.selectedIndex].chapters);
 });
 
-
-
 selectPart.addEventListener("change", function () {
   part = this.options[this.selectedIndex].value;
 
@@ -89,19 +86,19 @@ selectPart.addEventListener("change", function () {
   fillVerses();
 });
 
-
-function up() {  
-  var top = Math.max(document.body.scrollTop,document.documentElement.scrollTop);  
-if(top > 0) {  
-  window.scrollBy(0,((top+100)/-10));  
-  t = setTimeout('up()',20);  
-} else clearTimeout(t);  
-return false;  
-} 
-
+function up() {
+  var top = Math.max(
+    document.body.scrollTop,
+    document.documentElement.scrollTop
+  );
+  if (top > 0) {
+    window.scrollBy(0, (top + 100) / -10);
+    t = setTimeout("up()", 20);
+  } else clearTimeout(t);
+  return false;
+}
 
 // ------------------------------------------
-
 
 fetch(urlAllBook)
   .then((resp) => resp.json())
