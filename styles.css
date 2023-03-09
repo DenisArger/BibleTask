@@ -98,14 +98,14 @@
   position: fixed;
   bottom: 0px;
   padding: 0px;
-  left: 50%;  
+  left: 60%;  
   margin-left: 500px;
   z-index:99991;
   }
 #back-top a{
   width: 77px;
-  height: 30px;
-  background: rgba(0, 0, 0, 0.25);
+  height: 22px;
+  background: rgba(0, 0, 0, 0.376);
   display:block;
   text-decoration:none;
   -webkit-transition: all linear 0.2s; 
@@ -114,16 +114,21 @@
   -o-transition: all linear 0.2s;
   transition: all linear 0.2s;
   text-align: center;
-   
+  border-radius: .5em;
+
   }
 
 #back-top a:hover{
-  height: 70px;
-  background: #240444;
+  height: 50px;
+  background: #717ef0;
   -webkit-transition: all linear 0.2s; 
   -moz-transition: all linear 0.2s;
   -ms-transition: all linear 0.2s;
   -o-transition: all linear 0.2s;
   transition: all linear 0.2s;
   color: #fff;
+  }
+
+  .sup-index{
+    color: blue;
   }

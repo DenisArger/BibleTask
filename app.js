@@ -51,70 +51,111 @@ function fillVerses() {
     .then(function (data) {
       nameBook = data.results[0].book_name;
       chapterVerse = data.results[0].chapter_verse;
+      let countTextPartColumn = 0;
 
-      console.log(data.results[0]);
+      /*
+      Получаем количество символов в главе
+      */
+      for (let i = 1; i <= data.results[0].verses_count; i++) {
+        let textVerse = data.results[0].verses.synodal[part][i].text;
+        let countText = textVerse.length;
+        countTextPartColumn += countText;
+      }
+      countTextPartColumn = countTextPartColumn / 2;
+      console.log("countTextPartColumn", countTextPartColumn);
 
       header.innerHTML = `Библейская страница: ${nameBook} ${chapterVerse} глава`;
 
       for (let i = 1; i <= data.results[0].verses_count; i++) {
-        vers =
-          `<sup> ${i} </sup>` + data.results[0].verses.synodal[part][i].text;
+        let textVerse = data.results[0].verses.synodal[part][i].text;
+        let countText = textVerse.length;
+        console.log("countText", countText);
+        vers = `<div class = "vers"> 
+          <sup class ="sup-index "> ${i} </sup>
+          ${textVerse}
+          </div>`;
 
-        if (i <= 4) bibleVerses1.innerHTML += `${vers}<br>`;
-        else bibleVerses2.innerHTML += `${vers}<br>`;
+        countTextPartColumn -= countText;
+        if (countTextPartColumn > 0) {
+          console.log("countTextPartColumn", countTextPartColumn);
+
+          bibleVerses1.innerHTML += `${vers}`;
+        } else bibleVerses2.innerHTML += `${vers}`;
       }
-
     })
     .catch(function (error) {
       console.log(error);
     });
 }
 
-
 selectBook.addEventListener("change", function () {
+  //Получаем короткое имя книги Библии из select
   shortname = this.options[this.selectedIndex].value;
-  chapters = dataBook[this.selectedIndex].chapters;
+  /*
+    Забираем по индексу, т.к. это массив объектов
+    Нумерация в массив с 0, потому index - 1 
+  */
+  chapters = dataBook[this.selectedIndex - 1].chapters;
   fillSelected(selectPart, chapters);
 
-  console.log("select=", this.options[this.selectedIndex].value);
-  console.log(dataBook[this.selectedIndex].chapters);
+  // console.log("select=", this.options[this.selectedIndex - 1].value);
+  // console.log(dataBook[this.selectedIndex].chapters);
 });
-
-
 
 selectPart.addEventListener("change", function () {
   part = this.options[this.selectedIndex].value;
 
-  console.log("select=", this.options[this.selectedIndex].value);
+  // console.log("select=", this.options[this.selectedIndex].value);
   fillVerses();
 });
 
-
-function up() {  
-  var top = Math.max(document.body.scrollTop,document.documentElement.scrollTop);  
-if(top > 0) {  
-  window.scrollBy(0,((top+100)/-10));  
-  t = setTimeout('up()',20);  
-} else clearTimeout(t);  
-return false;  
-} 
-
+function up() {
+  var top = Math.max(
+    document.body.scrollTop,
+    document.documentElement.scrollTop
+  );
+  if (top > 0) {
+    window.scrollBy(0, (top + 100) / -10);
+    t = setTimeout("up()", 20);
+  } else clearTimeout(t);
+  return false;
+}
 
 // ------------------------------------------
 
+// fetch(urlAllBook)
+//   .then((resp) => resp.json())
+//   .then(function (data) {
+//     dataBook = data.results;
 
-fetch(urlAllBook)
+//     for (let result of data.results) {
+//       let option = createNode("option");
+//       option.value = `${result.shortname}`;
+//       option.label = `${result.name}`;
+//       append(selectBook, option);
+//     }
+//   })
+//   .catch(function (error) {
+//     console.log(error);
+//   });
+
+
+fetch("https://raw.githubusercontent.com/josephilipraja/bible-cross-reference-json/master/1.json")
   .then((resp) => resp.json())
   .then(function (data) {
-    dataBook = data.results;
-
-    for (let result of data.results) {
-      let option = createNode("option");
-      option.value = `${result.shortname}`;
-      option.label = `${result.name}`;
-      append(selectBook, option);
+   console.log(data)
+   for (key in data) {
+      console.log(data[key].v)
+      console.log(data[key].r)
     }
   })
   .catch(function (error) {
     console.log(error);
   });
+
+
+
+
+
+
+
