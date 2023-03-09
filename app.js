@@ -123,18 +123,39 @@ function up() {
 
 // ------------------------------------------
 
-fetch(urlAllBook)
+// fetch(urlAllBook)
+//   .then((resp) => resp.json())
+//   .then(function (data) {
+//     dataBook = data.results;
+
+//     for (let result of data.results) {
+//       let option = createNode("option");
+//       option.value = `${result.shortname}`;
+//       option.label = `${result.name}`;
+//       append(selectBook, option);
+//     }
+//   })
+//   .catch(function (error) {
+//     console.log(error);
+//   });
+
+
+fetch("https://raw.githubusercontent.com/josephilipraja/bible-cross-reference-json/master/1.json")
   .then((resp) => resp.json())
   .then(function (data) {
-    dataBook = data.results;
-
-    for (let result of data.results) {
-      let option = createNode("option");
-      option.value = `${result.shortname}`;
-      option.label = `${result.name}`;
-      append(selectBook, option);
+   console.log(data)
+   for (key in data) {
+      console.log(data[key].v)
+      console.log(data[key].r)
     }
   })
   .catch(function (error) {
     console.log(error);
   });
+
+
+
+
+
+
+
