@@ -132,3 +132,8 @@
   .sup-index{
     color: blue;
   }
+
+  .versRef{
+    display: flex;
+    font-size: 9pt;
+  }
