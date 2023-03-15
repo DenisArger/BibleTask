@@ -18,212 +18,73 @@ let countVerses;
 let referenceVers;
 
 
-//Словарь для организации соответствия между краткими названиями из разных json файлов
-let nameBooksMap = new Map();
-nameBooksMap.set("Gen", "GEN");
-nameBooksMap.set("Ex", "EXO");
-nameBooksMap.set("Lev", "LEV");
-nameBooksMap.set("Num", "NUM");
-nameBooksMap.set("Deut", "DEU");
-nameBooksMap.set("Josh", "JOS");
-nameBooksMap.set("Judg", "JDG");
-nameBooksMap.set("Ru", "RUT");
-nameBooksMap.set("1 Sam", "1SA");
-nameBooksMap.set("2 Sam", "2SA");
-nameBooksMap.set("1 Ki", "1KI");
-nameBooksMap.set("2 Ki", "2KI");
-nameBooksMap.set("1 Chron", "1CH");
-nameBooksMap.set("2 Chron", "2CH");
-nameBooksMap.set("Ezra", "EZR");
-nameBooksMap.set("Neh", "NEH");
-nameBooksMap.set("Esth", "EST");
-nameBooksMap.set("Job", "JOB");
-nameBooksMap.set("Ps", "PSA");
-nameBooksMap.set("Prov", "PRO");
-nameBooksMap.set("Ecc", "ECC");
-nameBooksMap.set("SOS", "SOS");
-nameBooksMap.set("Isa", "ISA");
-nameBooksMap.set("Jer", "JER");
-nameBooksMap.set("Lam", "LAM");
-nameBooksMap.set("Eze", "EZE");
-nameBooksMap.set("Dan", "DAN");
-nameBooksMap.set("Hos", "HOS");
-nameBooksMap.set("Joel", "JOE");
-nameBooksMap.set("Amos", "AMO");
-nameBooksMap.set("Obad", "OBA");
-nameBooksMap.set("Jon", "JON");
-nameBooksMap.set("Micah", "MIC");
-nameBooksMap.set("Nah", "NAH");
-nameBooksMap.set("Hab", "HAB");
-nameBooksMap.set("Zeph", "ZEP");
-nameBooksMap.set("Hag", "HAG");
-nameBooksMap.set("Zech", "ZEC");
-nameBooksMap.set("Mal", "MAL");
-nameBooksMap.set("Matt", "MAT");
-nameBooksMap.set("Mark", "MAR");
-nameBooksMap.set("Luke", "LUK");
-nameBooksMap.set("John", "JOH");
-nameBooksMap.set("Acts", "ACT");
-nameBooksMap.set("Rom", "ROM");
-nameBooksMap.set("1 Cor", "1CO");
-nameBooksMap.set("2 Cor", "2CO");
-nameBooksMap.set("Gal", "GAL");
-nameBooksMap.set("Eph", "EPH");
-nameBooksMap.set("Phil", "PHP");
-nameBooksMap.set("Col", "COL");
-nameBooksMap.set("1 Thess", "1TH");
-nameBooksMap.set("2 Thess", "2TH");
-nameBooksMap.set("1 Tim", "1TI");
-nameBooksMap.set("2 Tim", "2TI");
-nameBooksMap.set("Titus", "TIT");
-nameBooksMap.set("Phm", "PHM");
-nameBooksMap.set("Heb", "HEB");
-nameBooksMap.set("Jas", "JAM");
-nameBooksMap.set("1 Pet", "1PE");
-nameBooksMap.set("2 Pet", "2PE");
-nameBooksMap.set("1 John", "1JO");
-nameBooksMap.set("2 John", "2JO");
-nameBooksMap.set("3 John", "3JO");
-nameBooksMap.set("Jude", "JDE");
-nameBooksMap.set("Rev", "REV");
-
-//Словарь для организации соответствия между краткими и полными названиями русском
-let nameAllBooksMap = new Map();
-nameAllBooksMap.set("Gen", "Бытие");
-nameAllBooksMap.set("Ex", "Исход");
-nameAllBooksMap.set("Lev", "Левит");
-nameAllBooksMap.set("Num", "Числа");
-nameAllBooksMap.set("Deut", "Второзаконие");
-nameAllBooksMap.set("Josh", "Иисус Навин");
-nameAllBooksMap.set("Judg", "Судеи");
-nameAllBooksMap.set("Ru", "Руфь");
-nameAllBooksMap.set("1 Sam", "1 Царств");
-nameAllBooksMap.set("2 Sam", "2 Царств");
-nameAllBooksMap.set("1 Ki", "3 Царств");
-nameAllBooksMap.set("2 Ki", "4 Царств");
-nameAllBooksMap.set("1 Chron", "1 Паралипоменон");
-nameAllBooksMap.set("2 Chron", "2 Паралипоменон");
-nameAllBooksMap.set("Ezra", "Ездра");
-nameAllBooksMap.set("Neh", "Неемия");
-nameAllBooksMap.set("Esth", "Есфирь");
-nameAllBooksMap.set("Job", "Иов");
-nameAllBooksMap.set("Ps", "Псалтирь");
-nameAllBooksMap.set("Prov", "Притчи");
-nameAllBooksMap.set("Ecc", "Екклесиаст");
-nameAllBooksMap.set("SOS", "Песни Песней");
-nameAllBooksMap.set("Isa", "Исаия");
-nameAllBooksMap.set("Jer", "Иеремия");
-nameAllBooksMap.set("Lam", "Плач Иеремии");
-nameAllBooksMap.set("Eze", "Иезекииль");
-nameAllBooksMap.set("Dan", "Даниил");
-nameAllBooksMap.set("Hos", "Осия");
-nameAllBooksMap.set("Joel", "Иоиль");
-nameAllBooksMap.set("Amos", "Амос");
-nameAllBooksMap.set("Obad", "Авдий");
-nameAllBooksMap.set("Jon", "Иона");
-nameAllBooksMap.set("Micah", "Михей");
-nameAllBooksMap.set("Nah", "Наум");
-nameAllBooksMap.set("Hab", "Аввакум");
-nameAllBooksMap.set("Zeph", "Софония");
-nameAllBooksMap.set("Hag", "Аггей");
-nameAllBooksMap.set("Zech", "Захария");
-nameAllBooksMap.set("Mal", "Малахия");
-nameAllBooksMap.set("Matt", "От Матфея");
-nameAllBooksMap.set("Mark", "От Марка");
-nameAllBooksMap.set("Luke", "От Луки");
-nameAllBooksMap.set("John", "От Иоанна");
-nameAllBooksMap.set("Acts", "Деяния апостолов");
-nameAllBooksMap.set("Rom", "Римлянам");
-nameAllBooksMap.set("1 Cor", "1 Коринфянам");
-nameAllBooksMap.set("2 Cor", "2 Коринфянам");
-nameAllBooksMap.set("Gal", "Галатам");
-nameAllBooksMap.set("Eph", "Ефесянам");
-nameAllBooksMap.set("Phil", "Филиппийцам");
-nameAllBooksMap.set("Col", "Колоссянам");
-nameAllBooksMap.set("1 Thess", "1 Фессалоникийцам");
-nameAllBooksMap.set("2 Thess", "2 Фессалоникийцам");
-nameAllBooksMap.set("1 Tim", "1 Тимофею");
-nameAllBooksMap.set("2 Tim", "2 Тимофею");
-nameAllBooksMap.set("Titus", "Титу");
-nameAllBooksMap.set("Phm", "Филимону");
-nameAllBooksMap.set("Heb", "Евреям");
-nameAllBooksMap.set("Jas", "Иакова");
-nameAllBooksMap.set("1 Pet", "1 Петра");
-nameAllBooksMap.set("2 Pet", "2 Петра");
-nameAllBooksMap.set("1 John", "1 Иоанна");
-nameAllBooksMap.set("2 John", "2 Иоанна");
-nameAllBooksMap.set("3 John", "3 Иоанна");
-nameAllBooksMap.set("Jude", "Иуды");
-nameAllBooksMap.set("Rev", "Откровение");
-
-//Словарь для организации соответствия между краткими названиями на англ и рус
-let nameShortBooksMap = new Map();
-nameShortBooksMap.set("GEN", "Быт.");
-nameShortBooksMap.set("EXO", "Исх.");
-nameShortBooksMap.set("LEV", "Лев.");
-nameShortBooksMap.set("NUM", "Числ.");
-nameShortBooksMap.set("DEU", "Втор.");
-nameShortBooksMap.set("JOS", "Ис.Нав.");
-nameShortBooksMap.set("JDG", "Суд.");
-nameShortBooksMap.set("RUT", "Руфь.");
-nameShortBooksMap.set("1SA", "1Цар.");
-nameShortBooksMap.set("2SA", "2Цар.");
-nameShortBooksMap.set("1KI", "3Цар.");
-nameShortBooksMap.set("2KI", "4Цар.");
-nameShortBooksMap.set("1CH", "1Пар.");
-nameShortBooksMap.set("2CH", "2Пар.");
-nameShortBooksMap.set("EZR", "Эзр.");
-nameShortBooksMap.set("NEH", "Неем.");
-nameShortBooksMap.set("EST", "Эсф.");
-nameShortBooksMap.set("JOB", "Иов.");
-nameShortBooksMap.set("PSA", "Пс.");
-nameShortBooksMap.set("PRO", "Притч.");
-nameShortBooksMap.set("ECC", "Эккл.");
-nameShortBooksMap.set("SOS", "Песн.");
-nameShortBooksMap.set("ISA", "Ис.");
-nameShortBooksMap.set("JER", "Иер.");
-nameShortBooksMap.set("LAM", "Плач.");
-nameShortBooksMap.set("EZE", "Иез.");
-nameShortBooksMap.set("DAN", "Дан.");
-nameShortBooksMap.set("HOS", "Ос.");
-nameShortBooksMap.set("JOE", "Иоил.");
-nameShortBooksMap.set("AMO", "Амос.");
-nameShortBooksMap.set("OBA", "Авд.");
-nameShortBooksMap.set("JON", "Ион.");
-nameShortBooksMap.set("MIC", "Мих.");
-nameShortBooksMap.set("NAH", "Наум.");
-nameShortBooksMap.set("HAB", "Авв.");
-nameShortBooksMap.set("ZEP", "Соф.");
-nameShortBooksMap.set("HAG", "Агг.");
-nameShortBooksMap.set("ZEC", "Зах.");
-nameShortBooksMap.set("MAL", "Мал.");
-nameShortBooksMap.set("MAT", "Мф.");
-nameShortBooksMap.set("MAR", "Мк.");
-nameShortBooksMap.set("LUK", "Лк.");
-nameShortBooksMap.set("JOH", "Ин.");
-nameShortBooksMap.set("ACT", "Деян.");
-nameShortBooksMap.set("ROM", "Рим.");
-nameShortBooksMap.set("1CO", "1Кор.");
-nameShortBooksMap.set("2CO", "2Кор.");
-nameShortBooksMap.set("GAL", "Гал.");
-nameShortBooksMap.set("EPH", "Эф.");
-nameShortBooksMap.set("PHP", "Флп.");
-nameShortBooksMap.set("COL", "Кол.");
-nameShortBooksMap.set("1TH", "1Фес.");
-nameShortBooksMap.set("2TH", "2Фес.");
-nameShortBooksMap.set("1TI", "1Тим.");
-nameShortBooksMap.set("2TI", "2Тим.");
-nameShortBooksMap.set("TIT", "Тит.");
-nameShortBooksMap.set("PHM", "Флм.");
-nameShortBooksMap.set("HEB", "Евр.");
-nameShortBooksMap.set("JAM", "Иак.");
-nameShortBooksMap.set("1PE", "1Петр.");
-nameShortBooksMap.set("2PE", "2Петр.");
-nameShortBooksMap.set("1JO", "1Ин.");
-nameShortBooksMap.set("2JO", "2Ин.");
-nameShortBooksMap.set("3JO", "3Ин.");
-nameShortBooksMap.set("JDE", "Иуд.");
-nameShortBooksMap.set("REV", "Откр.");
+let allInfoBooks = new Array();
+allInfoBooks.push({shortNameJs1: "Gen",  	shortNameJs2: "GEN",  shortNameRus: "Быт.",  	fullNameRus: "Бытие"});
+allInfoBooks.push({shortNameJs1: "Ex",  	shortNameJs2: "EXO",  shortNameRus: "Исх.",  	fullNameRus: "Исход"});
+allInfoBooks.push({shortNameJs1: "Lev",  	shortNameJs2: "LEV",  shortNameRus: "Лев.",  	fullNameRus: "Левит"});
+allInfoBooks.push({shortNameJs1: "Num",  	shortNameJs2: "NUM",  shortNameRus: "Числ.",  	fullNameRus: "Числа"});
+allInfoBooks.push({shortNameJs1: "Deut",  	shortNameJs2: "DEU",  shortNameRus: "Втор.",  	fullNameRus: "Второзаконие"});
+allInfoBooks.push({shortNameJs1: "Josh",  	shortNameJs2: "JOS",  shortNameRus: "Ис.Нав.",  fullNameRus: "Иисус Навин"});
+allInfoBooks.push({shortNameJs1: "Judg",  	shortNameJs2: "JDG",  shortNameRus: "Суд.",  	fullNameRus: "Судеи"});
+allInfoBooks.push({shortNameJs1: "Ru",  	shortNameJs2: "RUT",  shortNameRus: "Руфь.",  	fullNameRus: "Руфь"});
+allInfoBooks.push({shortNameJs1: "1 Sam",  	shortNameJs2: "1SA",  shortNameRus: "1Цар.",   fullNameRus: "1 Царств"});
+allInfoBooks.push({shortNameJs1: "2 Sam",  	shortNameJs2: "2SA",  shortNameRus: "2Цар.",   fullNameRus: "2 Царств"});
+allInfoBooks.push({shortNameJs1: "1 Ki",  	shortNameJs2: "1KI",  shortNameRus: "3Цар.",   fullNameRus: "3 Царств"});
+allInfoBooks.push({shortNameJs1: "2 Ki",  	shortNameJs2: "2KI",  shortNameRus: "4Цар.",   fullNameRus: "4 Царств"});
+allInfoBooks.push({shortNameJs1: "1 Chron", shortNameJs2: "1CH",  shortNameRus: "1Пар.",   fullNameRus: "1 Паралипоменон"});
+allInfoBooks.push({shortNameJs1: "2 Chron", shortNameJs2: "2CH",  shortNameRus: "2Пар.",   fullNameRus: "2 Паралипоменон"});
+allInfoBooks.push({shortNameJs1: "Ezra", 	shortNameJs2: "EZR",  shortNameRus: "Езр.",  	fullNameRus: "Ездра"});
+allInfoBooks.push({shortNameJs1: "Neh",  	shortNameJs2: "NEH",  shortNameRus: "Неем.",  	fullNameRus: "Неемия"});
+allInfoBooks.push({shortNameJs1: "Esth",  	shortNameJs2: "EST",  shortNameRus: "Эсф.",  	fullNameRus: "Есфирь"});
+allInfoBooks.push({shortNameJs1: "Job",  	shortNameJs2: "JOB",  shortNameRus: "Иов.",  	fullNameRus: "Иов"});
+allInfoBooks.push({shortNameJs1: "Ps",  	shortNameJs2: "PSA",  shortNameRus: "Пс.",  	fullNameRus: "Псалтирь"});
+allInfoBooks.push({shortNameJs1: "Prov",  	shortNameJs2: "PRO",  shortNameRus: "Притч.",   fullNameRus: "Притчи"});
+allInfoBooks.push({shortNameJs1: "Ecc",  	shortNameJs2: "ECC",  shortNameRus: "Эккл.",  	fullNameRus: "Екклесиаст"});
+allInfoBooks.push({shortNameJs1: "SOS",  	shortNameJs2: "SOS",  shortNameRus: "Песн.",  	fullNameRus: "Песни Песней"});
+allInfoBooks.push({shortNameJs1: "Isa",  	shortNameJs2: "ISA",  shortNameRus: "Ис.",  	fullNameRus: "Исаия"});
+allInfoBooks.push({shortNameJs1: "Jer",  	shortNameJs2: "JER",  shortNameRus: "Иер.",  	fullNameRus: "Иеремия"});
+allInfoBooks.push({shortNameJs1: "Lam",  	shortNameJs2: "LAM",  shortNameRus: "Плач.",  	fullNameRus: "Плач Иеремии"});
+allInfoBooks.push({shortNameJs1: "Eze",  	shortNameJs2: "EZE",  shortNameRus: "Иез.",  	fullNameRus: "Иезекииль"});
+allInfoBooks.push({shortNameJs1: "Dan",  	shortNameJs2: "DAN",  shortNameRus: "Дан.",  	fullNameRus: "Даниил"});
+allInfoBooks.push({shortNameJs1: "Hos",  	shortNameJs2: "HOS",  shortNameRus: "Ос.",  	fullNameRus: "Осия"});
+allInfoBooks.push({shortNameJs1: "Joel",  	shortNameJs2: "JOE",  shortNameRus: "Иоил.",  	fullNameRus: "Иоиль"});
+allInfoBooks.push({shortNameJs1: "Amos",  	shortNameJs2: "AMO",  shortNameRus: "Амос.",  	fullNameRus: "Амос"});
+allInfoBooks.push({shortNameJs1: "Obad",  	shortNameJs2: "OBA",  shortNameRus: "Авд.",  	fullNameRus: "Авдий"});
+allInfoBooks.push({shortNameJs1: "Jon",  	shortNameJs2: "JON",  shortNameRus: "Ион.",  	fullNameRus: "Иона"});
+allInfoBooks.push({shortNameJs1: "Micah",  	shortNameJs2: "MIC",  shortNameRus: "Мих.",  	fullNameRus: "Михей"});
+allInfoBooks.push({shortNameJs1: "Nah",  	shortNameJs2: "NAH",  shortNameRus: "Наум.",  	fullNameRus: "Наум"});
+allInfoBooks.push({shortNameJs1: "Hab",  	shortNameJs2: "HAB",  shortNameRus: "Авв.",  	fullNameRus: "Аввакум"});
+allInfoBooks.push({shortNameJs1: "Zeph",  	shortNameJs2: "ZEP",  shortNameRus: "Соф.",  	fullNameRus: "Софония"});
+allInfoBooks.push({shortNameJs1: "Hag",  	shortNameJs2: "HAG",  shortNameRus: "Агг.",  	fullNameRus: "Аггей"});
+allInfoBooks.push({shortNameJs1: "Zech",  	shortNameJs2: "ZEC",  shortNameRus: "Зах.",  	fullNameRus: "Захария"});
+allInfoBooks.push({shortNameJs1: "Mal",  	shortNameJs2: "MAL",  shortNameRus: "Мал.",  	fullNameRus: "Малахия"});
+allInfoBooks.push({shortNameJs1: "Matt",  	shortNameJs2: "MAT",  shortNameRus: "Мф.",  	fullNameRus: "От Матфея"});
+allInfoBooks.push({shortNameJs1: "Mark",  	shortNameJs2: "MAR",  shortNameRus: "Мк.",  	fullNameRus: "От Марка"});
+allInfoBooks.push({shortNameJs1: "Luke",  	shortNameJs2: "LUK",  shortNameRus: "Лк.",  	fullNameRus: "От Луки"});
+allInfoBooks.push({shortNameJs1: "John",  	shortNameJs2: "JOH",  shortNameRus: "Ин.",  	fullNameRus: "От Иоанна"});
+allInfoBooks.push({shortNameJs1: "Acts",  	shortNameJs2: "ACT",  shortNameRus: "Деян.",  	fullNameRus: "Деяния апостолов"});
+allInfoBooks.push({shortNameJs1: "Rom",  	shortNameJs2: "ROM",  shortNameRus: "Рим.",  	fullNameRus: "Римлянам"});
+allInfoBooks.push({shortNameJs1: "1 Cor",  	shortNameJs2: "1CO",  shortNameRus: "1Кор.",  	fullNameRus: "1 Коринфянам"});
+allInfoBooks.push({shortNameJs1: "2 Cor",  	shortNameJs2: "2CO",  shortNameRus: "2Кор.",  	fullNameRus: "2 Коринфянам"});
+allInfoBooks.push({shortNameJs1: "Gal",  	shortNameJs2: "GAL",  shortNameRus: "Гал.",  	fullNameRus: "Галатам"});
+allInfoBooks.push({shortNameJs1: "Eph",  	shortNameJs2: "EPH",  shortNameRus: "Эф.",  	fullNameRus: "Ефесянам"});
+allInfoBooks.push({shortNameJs1: "Phil",  	shortNameJs2: "PHP",  shortNameRus: "Флп.",  	fullNameRus: "Филиппийцам"});
+allInfoBooks.push({shortNameJs1: "Col",  	shortNameJs2: "COL",  shortNameRus: "Кол.",  	fullNameRus: "Колоссянам"});
+allInfoBooks.push({shortNameJs1: "1 Thess", shortNameJs2: "1TH",  shortNameRus: "1Фес.",	fullNameRus: "1 Фессалоникийцам"});
+allInfoBooks.push({shortNameJs1: "2 Thess", shortNameJs2: "2TH",  shortNameRus: "2Фес.",   fullNameRus: "2 Фессалоникийцам"});
+allInfoBooks.push({shortNameJs1: "1 Tim",  	shortNameJs2: "1TI",  shortNameRus: "1Тим.",   fullNameRus: "1 Тимофею"});
+allInfoBooks.push({shortNameJs1: "2 Tim",  	shortNameJs2: "2TI",  shortNameRus: "2Тим.",   fullNameRus: "2 Тимофею"});
+allInfoBooks.push({shortNameJs1: "Titus",  	shortNameJs2: "TIT",  shortNameRus: "Тит.",  	fullNameRus: "Титу"});
+allInfoBooks.push({shortNameJs1: "Phm",  	shortNameJs2: "PHM",  shortNameRus: "Флм.",  	fullNameRus: "Филимону"});
+allInfoBooks.push({shortNameJs1: "Heb",  	shortNameJs2: "HEB",  shortNameRus: "Евр.",  	fullNameRus: "Евреям"});
+allInfoBooks.push({shortNameJs1: "Jas",  	shortNameJs2: "JAM",  shortNameRus: "Иак.",  	fullNameRus: "Иакова"});
+allInfoBooks.push({shortNameJs1: "1 Pet",  	shortNameJs2: "1PE",  shortNameRus: "1Петр.",  fullNameRus: "1 Петра"});
+allInfoBooks.push({shortNameJs1: "2 Pet",  	shortNameJs2: "2PE",  shortNameRus: "2Петр.",  fullNameRus: "2 Петра"});
+allInfoBooks.push({shortNameJs1: "1 John",  shortNameJs2: "1JO",  shortNameRus: "1Ин.",  	fullNameRus: "1 Иоанна"});
+allInfoBooks.push({shortNameJs1: "2 John",  shortNameJs2: "2JO",  shortNameRus: "2Ин.",  	fullNameRus: "2 Иоанна"});
+allInfoBooks.push({shortNameJs1: "3 John",  shortNameJs2: "3JO",  shortNameRus: "3Ин.",  	fullNameRus: "3 Иоанна"});
+allInfoBooks.push({shortNameJs1: "Jude",  	shortNameJs2: "JDE",  shortNameRus: "Иуд.",  	fullNameRus: "Иуды"});
+allInfoBooks.push({shortNameJs1: "Rev",  	shortNameJs2: "REV",  shortNameRus: "Откр.",  	fullNameRus: "Откровение"});
 
 function createNode(element) {
   return document.createElement(element);
@@ -280,14 +141,12 @@ function fillVerses() {
         countTextPartColumn += countText;
       }
       countTextPartColumn = countTextPartColumn / 2;
-      // console.log("countTextPartColumn", countTextPartColumn);
 
       header.innerHTML = `Библейская страница: ${nameBook} ${chapterVerse} глава`;
 
       for (let i = 1; i <= data.results[0].verses_count; i++) {
         let textVerse = data.results[0].verses.synodal[part][i].text;
         let countText = textVerse.length;
-        // console.log("countText", countText);
         vers = `<div class = "vers"> 
           <sup class ="sup-index "> ${i} </sup>
           ${textVerse}
@@ -295,8 +154,6 @@ function fillVerses() {
 
         countTextPartColumn -= countText;
         if (countTextPartColumn > 0) {
-          // console.log("countTextPartColumn", countTextPartColumn);
-
           bibleVerses1.innerHTML += `${vers}`;
         } else bibleVerses2.innerHTML += `${vers}`;
       }
@@ -363,13 +220,9 @@ function fillInfoFileCross() {
   }
 }
 
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 function findCrossReference(countFile, shortname, part, numberVers) {
   let usrlFileJson = `https://raw.githubusercontent.com/josephilipraja/bible-cross-reference-json/master/${countFile}.json`;
-  shortname = nameBooksMap.get(shortname);
+  shortname = getShortNameJs2(shortname);
   fetch(usrlFileJson)
     .then((resp) => resp.json())
     .then(function (data) {
@@ -391,7 +244,7 @@ function findCrossReference(countFile, shortname, part, numberVers) {
             let tempVersRef = data[key].r[k].split(" ");
             console.log(tempVersRef);
             let nameRef = tempVersRef[0];
-            nameRef = nameShortBooksMap.get(nameRef);
+            nameRef = getShortNameRus(nameRef);
             let partRef = tempVersRef[1];
             let verRef = tempVersRef[2];
 
@@ -411,7 +264,7 @@ function findCrossReference(countFile, shortname, part, numberVers) {
 }
 
 function findCountFile(shortname, part, numberVers) {
-  shortname = nameBooksMap.get(shortname);
+  shortname = getShortNameJs2(shortname);
   return infoFileCross.find(
     (item) => item.nameVerse == `${shortname} ${part} ${numberVers}`
   ).countFile;
@@ -424,6 +277,20 @@ function fillCrossReference(countVerses) {
     findCrossReference(countFile, shortname, part, numberVerse);
   }
 }
+
+function getFullnameRus(shortNameJs1){
+  return allInfoBooks.find(element=>element.shortNameJs1 == shortNameJs1).fullNameRus;
+}
+
+function getShortNameRus(shortNameJs2){
+  return allInfoBooks.find(element=>element.shortNameJs2 == shortNameJs2).shortNameRus;
+}
+
+function getShortNameJs2(shortNameJs1){
+  return allInfoBooks.find(element=>element.shortNameJs1 == shortNameJs1).shortNameJs2;
+}
+
+
 
 
 // ------------------------------------------
@@ -439,7 +306,7 @@ fetch(urlAllBook)
     for (let result of data.results) {
       let option = createNode("option");
       option.value = `${result.shortname}`;
-      let name = nameAllBooksMap.get(result.shortname);
+      let name = getFullnameRus(result.shortname);
       option.label = `${name}`;
       append(selectBook, option);
     }
