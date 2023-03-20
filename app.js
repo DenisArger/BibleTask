@@ -7,18 +7,15 @@ const bibleReference = document.querySelector(".bible-reference");
 
 const selectBook = document.querySelector(".book");
 const selectPart = document.querySelector(".part");
+
 let dataBook;
 let shortname;
 let part;
-let numberVers;
 let infoFileCross = new Array();
-let books = new Array();
-let countFile;
 let countVerses;
-let referenceVers;
 
 
-let allInfoBooks = new Array();
+const allInfoBooks = new Array();
 allInfoBooks.push({shortNameJs1: "Gen",  	shortNameJs2: "GEN",  shortNameRus: "Быт.",  	fullNameRus: "Бытие"});
 allInfoBooks.push({shortNameJs1: "Ex",  	shortNameJs2: "EXO",  shortNameRus: "Исх.",  	fullNameRus: "Исход"});
 allInfoBooks.push({shortNameJs1: "Lev",  	shortNameJs2: "LEV",  shortNameRus: "Лев.",  	fullNameRus: "Левит"});
@@ -127,25 +124,24 @@ function fillVerses() {
   fetch(url)
     .then((resp) => resp.json())
     .then(function (data) {
-      nameBook = data.results[0].book_name;
-      chapterVerse = data.results[0].chapter_verse;
+      let { book_name:nameBook, chapter_verse, verses_count, verses } = data.results[0]
       let countTextPartColumn = 0;
-      countVerses = data.results[0].verses_count;
+      countVerses = verses_count;
 
       /*
       Получаем количество символов в главе
       */
-      for (let i = 1; i <= data.results[0].verses_count; i++) {
-        let textVerse = data.results[0].verses.synodal[part][i].text;
+      for (let i = 1; i <= verses_count; i++) {
+        let textVerse = verses.synodal[part][i].text;
         let countText = textVerse.length;
         countTextPartColumn += countText;
       }
       countTextPartColumn = countTextPartColumn / 2;
 
-      header.innerHTML = `Библейская страница: ${nameBook} ${chapterVerse} глава`;
+      header.innerHTML = `Библейская страница: ${nameBook} ${chapter_verse} глава`;
 
-      for (let i = 1; i <= data.results[0].verses_count; i++) {
-        let textVerse = data.results[0].verses.synodal[part][i].text;
+      for (let i = 1; i <= verses_count; i++) {
+        let textVerse = verses.synodal[part][i].text;
         let countText = textVerse.length;
         vers = `<div class = "vers"> 
           <sup class ="sup-index "> ${i} </sup>
@@ -183,17 +179,6 @@ selectPart.addEventListener("change", function () {
   fillVerses();
 });
 
-function up() {
-  var top = Math.max(
-    document.body.scrollTop,
-    document.documentElement.scrollTop
-  );
-  if (top > 0) {
-    window.scrollBy(0, (top + 100) / -10);
-    t = setTimeout("up()", 20);
-  } else clearTimeout(t);
-  return false;
-}
 
 function fillObjectFileCrossRefence(countFile) {
   let usrlFileJson = `https://raw.githubusercontent.com/josephilipraja/bible-cross-reference-json/master/${countFile}.json`;
@@ -201,9 +186,7 @@ function fillObjectFileCrossRefence(countFile) {
     .then((resp) => resp.json())
     .then(function (data) {
       for (key in data) {
-        const str = data[key].v;
-
-        infoFileCross.push({
+          infoFileCross.push({
           nameVerse: data[key].v,
           countFile: countFile,
         });
@@ -231,7 +214,7 @@ function findCrossReference(countFile, shortname, part, numberVers) {
           let tempVers = data[key].v.split(" ");
           let numberReference = tempVers[2];
 
-          let vers = `<div class = "vers"> 
+          let vers = `<div class="vers"> 
           <sup class ="sup-index "> 
           ${numberReference}: 
           </sup>
@@ -242,14 +225,12 @@ function findCrossReference(countFile, shortname, part, numberVers) {
           for (k in data[key].r) {
             if (countRef > 3) break;
             let tempVersRef = data[key].r[k].split(" ");
-            console.log(tempVersRef);
             let nameRef = tempVersRef[0];
             nameRef = getShortNameRus(nameRef);
             let partRef = tempVersRef[1];
             let verRef = tempVersRef[2];
 
             versRef += `${nameRef} ${partRef}:${verRef}; `;
-            console.log(data[key].r[k]);
             countRef++;
           }
           bibleReference.innerHTML += `<div class = "versRef"> 

@@ -5,9 +5,9 @@
 }
 
 .title-page h4 {
-  color: rgb(0, 0, 0);
+  color: #000000;
   text-align: center;
-  font-size: 25pt;
+  font-size: 2em;
   font-family: sans-serif;
 }
 
@@ -18,17 +18,20 @@
 .bible-text {
   background: rgb(241, 236, 185);
   width: 100%;
-  font-size: 22pt;
-  margin: 10px;
+  font-size: 1.5em;
+  margin: 0.5em;
   border-radius: .5em;
   font-family: sans-serif;
+  padding: 1%;
 }
 
 .bible-reference {
   background: rgb(224, 247, 224);
-  width: 10%;
-  margin: 10px;
-  border-radius: .5em;
+  width: 25%;
+  margin: 0.5em;
+  border-radius: .5em; 
+  padding: 1%;
+
 }
 
 .select-book {
@@ -47,8 +50,6 @@
   padding: .6em 1.4em .5em .8em;
   width: 100%;
   max-width: 100%;
-  box-sizing: border-box;
-  margin: 0;
   border: 1px solid #aaa;
   box-shadow: 0 1px 0 1px rgba(0, 0, 0, .04);
   border-radius: .5em;
@@ -82,14 +83,7 @@
   font-weight: normal;
 }
 
-*[dir="rtl"] .select-css,
-:root:lang(ar) .select-css,
-:root:lang(iw) .select-css {
-  background-position: left .7em top 50%, 0 0;
-  padding: .6em .8em .5em 1.4em;
-}
-
-.part{
+.part {
   width: 30%;
 }
 
@@ -98,17 +92,17 @@
   position: fixed;
   bottom: 0px;
   padding: 0px;
-  left: 60%;  
-  margin-left: 500px;
-  z-index:99991;
-  }
-#back-top a{
+  right: 40px;
+  z-index: 99991;
+}
+
+#back-top a {
   width: 77px;
   height: 22px;
   background: rgba(0, 0, 0, 0.376);
-  display:block;
-  text-decoration:none;
-  -webkit-transition: all linear 0.2s; 
+  display: block;
+  text-decoration: none;
+  -webkit-transition: all linear 0.2s;
   -moz-transition: all linear 0.2s;
   -ms-transition: all linear 0.2s;
   -o-transition: all linear 0.2s;
@@ -116,24 +110,23 @@
   text-align: center;
   border-radius: .5em;
 
-  }
+}
 
-#back-top a:hover{
+#back-top a:hover {
   height: 50px;
   background: #717ef0;
-  -webkit-transition: all linear 0.2s; 
-  -moz-transition: all linear 0.2s;
-  -ms-transition: all linear 0.2s;
-  -o-transition: all linear 0.2s;
-  transition: all linear 0.2s;
   color: #fff;
-  }
+}
 
-  .sup-index{
-    color: blue;
-  }
+.sup-index {
+  color: blue;
+}
 
-  .versRef{
-    display: flex;
-    font-size: 9pt;
-  }
+.versRef {
+  display: flex;
+  font-size: 9pt;
+}
+
+html {
+  scroll-behavior: smooth;
+}
