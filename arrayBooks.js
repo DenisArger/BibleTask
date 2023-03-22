@@ -397,3 +397,36 @@ allInfoBooks.push({
 });
 
 
+verseDouble = new Array;
+verseDouble.push('GEN 34');
+verseDouble.push('EXO 17');
+verseDouble.push('LEV 11');
+verseDouble.push('NUM 10');
+verseDouble.push('DEU 3');
+verseDouble.push('JOS 7'); 
+verseDouble.push('JDG 18');
+verseDouble.push('1SA 30');
+verseDouble.push('1KI 8'); 
+verseDouble.push('2KI 17');
+verseDouble.push('1CH 23');
+verseDouble.push('2CH 36');
+verseDouble.push('JOB 6');
+verseDouble.push('PSA 7'); 
+verseDouble.push('PSA 71');
+verseDouble.push('PSA 119');
+verseDouble.push('PRO 21');
+verseDouble.push('ISA 18');
+verseDouble.push('JER 2');
+verseDouble.push('JER 43');
+verseDouble.push('EZE 22');
+verseDouble.push('DAN 9');
+verseDouble.push('ZEC 8'); 
+verseDouble.push('MAT 24');
+verseDouble.push('LUK 2');
+verseDouble.push('LUK 24');
+verseDouble.push('ACT 3');
+verseDouble.push('ROM 3');
+verseDouble.push('2CO 11');
+verseDouble.push('HEB 3');
+verseDouble.push('REV 18');
+

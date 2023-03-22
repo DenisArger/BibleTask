@@ -117,29 +117,28 @@ selectPart.addEventListener("change", function () {
   fillVerses();
 });
 
-function findCrossReference(countFile, shortname, part, startNumberVerse =1) {
-  logger(countFile);
-
+function findCrossReference(countFile, shortname, part, startNumberVerse = 1) {
   let usrlFileJson = `https://raw.githubusercontent.com/josephilipraja/bible-cross-reference-json/master/${countFile}.json`;
   let shortnameJs2 = getShortNameJs2(shortname);
   fetch(usrlFileJson)
     .then((resp) => resp.json())
     .then(function (data) {
       parsingDataRef(data);
-      logger(dataRef);
-      for (let numberVerse = startNumberVerse; numberVerse <= countVerses; numberVerse++) {
+      for (
+        let numberVerse = startNumberVerse;
+        numberVerse <= countVerses;
+        numberVerse++
+      ) {
         let reff = getVersReference(
           dataRef,
           `${shortnameJs2} ${part} ${numberVerse}`
         );
-        logger(reff);
         if (reff) {
           reff = reff.versReference;
-          fillVersesReference(reff,numberVerse)
-        }else{
+          fillVersesReference(reff, numberVerse);
+        } else {
           break;
         }
-        
       }
     })
     .catch(function (error) {
@@ -159,6 +158,13 @@ function fillCrossReference() {
 
   let countFile = findCountFile(shortname, part, 1);
   findCrossReference(countFile, shortname, part);
+
+  if (isDoubleVerse(verseDouble,`${getShortNameJs2(shortname)} ${part}`)){
+    while(dataRef.length > 0) {
+      dataRef.pop();
+  }
+    findCrossReference(countFile+1, shortname, part);
+  }
 }
 //Возможно эти функции  стоит перенести в config файл
 function getFullnameRus(shortNameJs1) {
@@ -196,6 +202,10 @@ function getVersReference(data, verse) {
   return data.find((element) => element.vers == verse);
 }
 
+function isDoubleVerse(data, verse) {
+  return data.includes(verse);
+}
+
 function fillVersesReference(ref, numberVers) {
   let vers = `<div class="vers"> 
         <sup class="sup-index "> 
@@ -221,11 +231,9 @@ function fillVersesReference(ref, numberVers) {
        </div>`;
 }
 
-
-function logger(text){
-  console.log(`${text}`,text);
+function logger(text) {
+  console.log(`${text}`, text);
 }
-
 
 // ------------------------------------------
 addScript("arrayBooks.js");
@@ -247,4 +255,3 @@ fetch(urlAllBook)
   .catch(function (error) {
     console.log(error);
   });
-
