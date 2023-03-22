@@ -11,8 +11,10 @@ const selectPart = document.querySelector(".part");
 let dataBook;
 let shortname;
 let part;
-let infoFileCross = new Array();
+let usrlFileJsonNew = "";
+let usrlFileJsonOld = "";
 let countVerses;
+let dataRef = new Array();
 
 function createNode(element) {
   return document.createElement(element);
@@ -91,7 +93,7 @@ function fillVerses() {
       }
     })
     .then(function () {
-      fillCrossReference(countVerses);
+      fillCrossReference();
     })
     .catch(function (error) {
       console.log(error);
@@ -115,62 +117,29 @@ selectPart.addEventListener("change", function () {
   fillVerses();
 });
 
-function fillObjectFileCrossRefence(countFile) {
+function findCrossReference(countFile, shortname, part, startNumberVerse =1) {
+  logger(countFile);
+
   let usrlFileJson = `https://raw.githubusercontent.com/josephilipraja/bible-cross-reference-json/master/${countFile}.json`;
+  let shortnameJs2 = getShortNameJs2(shortname);
   fetch(usrlFileJson)
     .then((resp) => resp.json())
     .then(function (data) {
-      for (key in data)
-        infoFileCross.push({
-          nameVerse: data[key].v,
-          countFile: countFile,
-        });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
-
-function fillInfoFileCross() {
-  for (let index = 1; index < 33; index++) {
-    fillObjectFileCrossRefence(index);
-  }
-}
-
-function findCrossReference(countFile, shortname, part, numberVers) {
-  let usrlFileJson = `https://raw.githubusercontent.com/josephilipraja/bible-cross-reference-json/master/${countFile}.json`;
-  shortname = getShortNameJs2(shortname);
-  fetch(usrlFileJson)
-    .then((resp) => resp.json())
-    .then(function (data) {
-      for (key in data) {
-        if (data[key].v == `${shortname} ${part} ${numberVers}`) {
-          let tempVers = data[key].v.split(" ");
-          let numberReference = tempVers[2];
-
-          let vers = `<div class="vers"> 
-          <sup class ="sup-index "> 
-          ${numberReference}: 
-          </sup>
-          </div>`;
-
-          let countRef = 0;
-          let versRef = "";
-          for (k in data[key].r) {
-            if (countRef > 3) break;
-            let tempVersRef = data[key].r[k].split(" ");
-            let nameRef = tempVersRef[0];
-            nameRef = getShortNameRus(nameRef);
-            let partRef = tempVersRef[1];
-            let verRef = tempVersRef[2];
-
-            versRef += `${nameRef} ${partRef}:${verRef}; `;
-            countRef++;
-          }
-          bibleReference.innerHTML += `<div class = "versRef"> 
-           ${vers} ${versRef}
-           </div>`;
+      parsingDataRef(data);
+      logger(dataRef);
+      for (let numberVerse = startNumberVerse; numberVerse <= countVerses; numberVerse++) {
+        let reff = getVersReference(
+          dataRef,
+          `${shortnameJs2} ${part} ${numberVerse}`
+        );
+        logger(reff);
+        if (reff) {
+          reff = reff.versReference;
+          fillVersesReference(reff,numberVerse)
+        }else{
+          break;
         }
+        
       }
     })
     .catch(function (error) {
@@ -185,12 +154,11 @@ function findCountFile(shortname, part, numberVers) {
   ).countFile;
 }
 
-function fillCrossReference(countVerses) {
+function fillCrossReference() {
   bibleReference.innerHTML = "";
-  for (let numberVerse = 1; numberVerse <= countVerses; numberVerse++) {
-    let countFile = findCountFile(shortname, part, numberVerse);
-    findCrossReference(countFile, shortname, part, numberVerse);
-  }
+
+  let countFile = findCountFile(shortname, part, 1);
+  findCrossReference(countFile, shortname, part);
 }
 //Возможно эти функции  стоит перенести в config файл
 function getFullnameRus(shortNameJs1) {
@@ -215,11 +183,53 @@ function addScript(src) {
   document.head.appendChild(script);
 }
 
-// ------------------------------------------
-addScript("config.js");
+function parsingDataRef(data) {
+  for (key in data) {
+    dataRef.push({
+      vers: data[key].v,
+      versReference: data[key].r,
+    });
+  }
+}
 
-//Заполнение файла с перекрестными ссылками и номерами файлов
-fillInfoFileCross();
+function getVersReference(data, verse) {
+  return data.find((element) => element.vers == verse);
+}
+
+function fillVersesReference(ref, numberVers) {
+  let vers = `<div class="vers"> 
+        <sup class="sup-index "> 
+        ${numberVers}: 
+        </sup>
+        </div>`;
+
+  let countRef = 0;
+  let versRef = "";
+  for (k in ref) {
+    if (countRef > 3) break;
+    let tempVersRef = ref[k].split(" ");
+    let nameRef = tempVersRef[0];
+    nameRef = getShortNameRus(nameRef);
+    let partRef = tempVersRef[1];
+    let verRef = tempVersRef[2];
+
+    versRef += `${nameRef} ${partRef}:${verRef}; `;
+    countRef++;
+  }
+  bibleReference.innerHTML += `<div class="versRef"> 
+       ${vers} ${versRef}
+       </div>`;
+}
+
+
+function logger(text){
+  console.log(`${text}`,text);
+}
+
+
+// ------------------------------------------
+addScript("arrayBooks.js");
+addScript("config.js");
 
 fetch(urlAllBook)
   .then((resp) => resp.json())
@@ -237,3 +247,4 @@ fetch(urlAllBook)
   .catch(function (error) {
     console.log(error);
   });
+
