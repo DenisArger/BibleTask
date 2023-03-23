@@ -129,10 +129,7 @@ function findCrossReference(countFile, shortname, part, startNumberVerse = 1) {
         numberVerse <= countVerses;
         numberVerse++
       ) {
-        let reff = getVersReference(
-          dataRef,
-          `${shortnameJs2} ${part} ${numberVerse}`
-        );
+        let reff = getVersReference(`${shortnameJs2} ${part} ${numberVerse}`);
         if (reff) {
           reff = reff.versReference;
           fillVersesReference(reff, numberVerse);
@@ -155,15 +152,20 @@ function findCountFile(shortname, part, numberVers) {
 
 function fillCrossReference() {
   bibleReference.innerHTML = "";
+  while (dataRef.length > 0) {
+    dataRef.pop();
+  }
 
   let countFile = findCountFile(shortname, part, 1);
   findCrossReference(countFile, shortname, part);
 
-  if (isDoubleVerse(verseDouble,`${getShortNameJs2(shortname)} ${part}`)){
-    while(dataRef.length > 0) {
+  if (isDoubleVerse(verseDouble, `${getShortNameJs2(shortname)} ${part}`)) {
+    while (dataRef.length > 0) {
       dataRef.pop();
-  }
-    findCrossReference(countFile+1, shortname, part);
+    }
+
+    // dataRef.length =0;
+    findCrossReference(countFile + 1, shortname, part);
   }
 }
 //Возможно эти функции  стоит перенести в config файл
@@ -198,8 +200,8 @@ function parsingDataRef(data) {
   }
 }
 
-function getVersReference(data, verse) {
-  return data.find((element) => element.vers == verse);
+function getVersReference(verse) {
+  return dataRef.find((element) => element.vers == verse);
 }
 
 function isDoubleVerse(data, verse) {
