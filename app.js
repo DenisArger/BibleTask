@@ -96,7 +96,7 @@ function fillVerses() {
     .then(function () {
       fillCrossReference();
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.log(error);
     });
 }
@@ -246,6 +246,6 @@ fetch(urlAllBook)
       append(selectBook, option);
     }
   })
-  .catch(function (error) {
+  .catch((error) => {
     console.log(error);
   });
