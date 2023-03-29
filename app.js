@@ -57,14 +57,14 @@ function fillVerses() {
     .then((resp) => resp.json())
     .then(function (data) {
       let {
-        book_name: nameBook,
+        // book_name: nameBook,
+        book_raw,
         chapter_verse,
         verses_count,
         verses,
       } = data.results[0];
       let countTextPartColumn = 0;
       countVerses = verses_count;
-
       /*
       Получаем количество символов в главе
       */
@@ -75,7 +75,9 @@ function fillVerses() {
       }
       countTextPartColumn = countTextPartColumn / 2;
 
-      header.innerHTML = `Библейская страница: ${nameBook} ${chapter_verse} глава`;
+      header.innerHTML = `Библейская страница: ${getFullnameRus(
+        book_raw
+      )} ${chapter_verse} глава`;
 
       for (let i = 1; i <= verses_count; i++) {
         let textVerse = verses.synodal[part][i].text;
