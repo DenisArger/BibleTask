@@ -14,7 +14,6 @@ let part;
 let usrlFileJsonNew = "";
 let usrlFileJsonOld = "";
 let countVerses;
-let dataRef = new Array();
 
 function createNode(element) {
   return document.createElement(element);
@@ -117,30 +116,31 @@ selectPart.addEventListener("change", function () {
   fillVerses();
 });
 
-function findCrossReference(countFile, shortname, part, startNumberVerse = 1) {
+async function findCrossReference(
+  countFile,
+  shortname,
+  part,
+  startNumberVerse = 1
+) {
   let usrlFileJson = `https://raw.githubusercontent.com/josephilipraja/bible-cross-reference-json/master/${countFile}.json`;
   let shortnameJs2 = getShortNameJs2(shortname);
-  fetch(usrlFileJson)
-    .then((resp) => resp.json())
-    .then(function (data) {
-      parsingDataRef(data);
-      for (
-        let numberVerse = startNumberVerse;
-        numberVerse <= countVerses;
-        numberVerse++
-      ) {
-        let reff = getVersReference(`${shortnameJs2} ${part} ${numberVerse}`);
-        if (reff) {
-          reff = reff.versReference;
-          fillVersesReference(reff, numberVerse);
-        } else {
-          break;
-        }
-      }
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+  let response = await fetch(usrlFileJson);
+  let data = await response.json();
+  let dataAray = await parsingDataRef(data);
+  for (
+    let numberVerse = startNumberVerse;
+    numberVerse <= countVerses;
+    numberVerse++
+  ) {
+    let reff = getVersReference(
+      dataAray,
+      `${shortnameJs2} ${part} ${numberVerse}`
+    );
+    if (reff) {
+      reff = reff.versReference;
+      fillVersesReference(reff, numberVerse);
+    }
+  }
 }
 
 function findCountFile(shortname, part, numberVers) {
@@ -150,21 +150,13 @@ function findCountFile(shortname, part, numberVers) {
   ).countFile;
 }
 
-function fillCrossReference() {
+async function fillCrossReference() {
   bibleReference.innerHTML = "";
-  while (dataRef.length > 0) {
-    dataRef.pop();
-  }
 
   let countFile = findCountFile(shortname, part, 1);
   findCrossReference(countFile, shortname, part);
 
   if (isDoubleVerse(verseDouble, `${getShortNameJs2(shortname)} ${part}`)) {
-    while (dataRef.length > 0) {
-      dataRef.pop();
-    }
-
-    // dataRef.length =0;
     findCrossReference(countFile + 1, shortname, part);
   }
 }
@@ -191,17 +183,19 @@ function addScript(src) {
   document.head.appendChild(script);
 }
 
-function parsingDataRef(data) {
+async function parsingDataRef(data) {
+  let dataArray = new Array();
   for (key in data) {
-    dataRef.push({
+    dataArray.push({
       vers: data[key].v,
       versReference: data[key].r,
     });
   }
+  return dataArray;
 }
 
-function getVersReference(verse) {
-  return dataRef.find((element) => element.vers == verse);
+function getVersReference(dataArray, verse) {
+  return dataArray.find((element) => element.vers == verse);
 }
 
 function isDoubleVerse(data, verse) {
@@ -231,10 +225,6 @@ function fillVersesReference(ref, numberVers) {
   bibleReference.innerHTML += `<div class="versRef"> 
        ${vers} ${versRef}
        </div>`;
-}
-
-function logger(text) {
-  console.log(`${text}`, text);
 }
 
 // ------------------------------------------
