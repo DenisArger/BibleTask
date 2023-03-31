@@ -118,22 +118,13 @@ selectPart.addEventListener("change", function () {
   fillVerses();
 });
 
-async function findCrossReference(
-  countFile,
-  shortname,
-  part,
-  startNumberVerse = 1
-) {
-  let usrlFileJson = `https://raw.githubusercontent.com/josephilipraja/bible-cross-reference-json/master/${countFile}.json`;
-  let shortnameJs2 = getShortNameJs2(shortname);
-  let response = await fetch(usrlFileJson);
-  let data = await response.json();
-  let dataAray = await parsingDataRef(data);
-  for (
-    let numberVerse = startNumberVerse;
-    numberVerse <= countVerses;
-    numberVerse++
-  ) {
+async function findCrossReference(countFile, shortname, part) {
+  const usrlFileJson = `https://raw.githubusercontent.com/josephilipraja/bible-cross-reference-json/master/${countFile}.json`;
+  const shortnameJs2 = getShortNameJs2(shortname);
+  const response = await fetch(usrlFileJson);
+  const data = await response.json();
+  const dataAray = await parsingDataRef(data);
+  for (let numberVerse = 1; numberVerse <= countVerses; numberVerse++) {
     let reff = getVersReference(
       dataAray,
       `${shortnameJs2} ${part} ${numberVerse}`
@@ -156,10 +147,10 @@ async function fillCrossReference() {
   bibleReference.innerHTML = "";
 
   let countFile = findCountFile(shortname, part, 1);
-  findCrossReference(countFile, shortname, part);
+  await findCrossReference(countFile, shortname, part);
 
   if (isDoubleVerse(verseDouble, `${getShortNameJs2(shortname)} ${part}`)) {
-    findCrossReference(countFile + 1, shortname, part);
+    await findCrossReference(countFile + 1, shortname, part);
   }
 }
 //Возможно эти функции  стоит перенести в config файл
@@ -193,6 +184,8 @@ async function parsingDataRef(data) {
       versReference: data[key].r,
     });
   }
+  //Удаляем последний элемент массива ввиду дублирования в других файлах
+  dataArray.pop();
   return dataArray;
 }
 
@@ -224,9 +217,11 @@ function fillVersesReference(ref, numberVers) {
     versRef += `${nameRef} ${partRef}:${verRef}; `;
     countRef++;
   }
-  bibleReference.innerHTML += `<div class="versRef"> 
-       ${vers} ${versRef}
-       </div>`;
+  if (versRef) {
+    bibleReference.innerHTML += `<div class="versRef">
+    ${vers} ${versRef}
+           </div>`;
+  }
 }
 
 // ------------------------------------------
