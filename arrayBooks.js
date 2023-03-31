@@ -1,4 +1,4 @@
-let allInfoBooks = [
+const allInfoBooks = [
   {
     shortNameJs1: "Gen",
     shortNameJs2: "GEN",
@@ -397,7 +397,7 @@ let allInfoBooks = [
   },
 ];
 
-verseDouble = [
+const verseDouble = [
   "GEN 34",
   "EXO 17",
   "LEV 11",
