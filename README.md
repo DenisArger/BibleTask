@@ -1,35 +1,67 @@
-﻿# BiblePages
+# BibleTask
 
-Веб‑страница для чтения Библии с выбором книги и главы, двухколоночным выводом текста и блоком перекрёстных ссылок. Данные берутся из открытых API и JSON‑файлов.
+## English
+## Problem
+Reading scripture with chapter navigation and cross references is inconvenient when content is split across multiple sources.
+## Solution
+BibleTask provides a lightweight web page that loads chapters from API and displays verse cross references in a readable format.
+## Tech Stack
+- HTML/CSS/JavaScript
+- External Bible API
+- Cross-reference JSON dataset
+## Architecture
+```text
+index.html
+app.js
+styles.css
+config.js
+arrayBooks.js
+```
+```mermaid
+flowchart TD
+  A[Browser user] --> B[UI selects book/chapter]
+  B --> C[Bible API chapter fetch]
+  B --> D[Cross-reference JSON]
+  C --> E[Two-column render]
+  D --> E
+```
+## Features
+- Book/chapter selectors
+- API-based chapter loading
+- Two-column scripture layout
+- Verse cross-reference panel
+## How to Run
+Open `index.html` in browser (internet access required for API calls).
 
+## Русский
+## Проблема
+Чтение Писания с навигацией по главам и перекрестными ссылками неудобно, когда данные приходят из разных источников.
+## Решение
+BibleTask — легковесная веб-страница, которая загружает главы через API и показывает перекрестные ссылки в удобном виде.
+## Стек
+- HTML/CSS/JavaScript
+- Внешний Bible API
+- JSON-датасет перекрестных ссылок
+## Архитектура
+```text
+index.html
+app.js
+styles.css
+config.js
+arrayBooks.js
+```
+```mermaid
+flowchart TD
+  A[Пользователь] --> B[Выбор книги/главы]
+  B --> C[Запрос главы к Bible API]
+  B --> D[JSON перекрестных ссылок]
+  C --> E[Рендер в 2 колонки]
+  D --> E
+```
 ## Возможности
-- Выбор книги и главы из выпадающих списков.
-- Загрузка текста главы (Синодальный перевод) по API.
-- Разделение текста на две колонки по объёму текста.
-- Показ перекрёстных ссылок по стихам (до 4 ссылок на стих).
-- Кнопка «ВВЕРХ» для быстрого возврата к началу.
-
-## Источники данных
-- Книги и главы: `https://api.biblesupersearch.com/api/books?language=en`.
-- Текст главы: `https://api.biblesupersearch.com/api?bible=synodal&reference={shortname} {chapter}`.
-- Перекрёстные ссылки: JSON‑файлы из репозитория `josephilipraja/bible-cross-reference-json`.
-
-## Как работает
-1. После загрузки страницы `app.js` запрашивает список книг и наполняет селект.
-2. При выборе книги вычисляется число глав и заполняется селект глав.
-3. При выборе главы загружается текст, рассчитывается «середина» по числу символов и формируются две колонки.
-4. Затем загружаются перекрёстные ссылки и выводятся рядом с текстом.
-
-## Структура проекта
-- `index.html` — разметка страницы.
-- `styles.css`, `reset.css` — стили.
-- `app.js` — основная логика загрузки и отображения.
-- `arrayBooks.js` — массивы/справочники по книгам.
-- `config.js` — справочники и маппинги для перекрёстных ссылок и названий.
-
-## Запуск
-Достаточно открыть `index.html` в браузере. Требуется интернет‑доступ для запросов к API.
-
-## Ограничения и заметки
-- Перекрёстные ссылки зависят от структуры внешних JSON‑файлов.
-- Если внешние API недоступны, страница не сможет загрузить данные.
+- Выбор книги и главы
+- Загрузка текста главы по API
+- Двухколоночный вывод текста
+- Блок перекрестных ссылок
+## Как запустить
+Откройте `index.html` в браузере (нужен интернет для API-запросов).
